@@ -62,7 +62,7 @@ const SearchPage = () => {
         setIsDropdownOpen(false);
     
         axios
-            .get("http://127.0.0.1:8000/data", { params: { query: searchQuery } })
+            .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/data", { params: { query: searchQuery } })
             .then((response) => {
                 if (response.data.error || response.data.stocks.length === 0) {
                     setError("검색 결과가 없습니다.");
@@ -99,7 +99,7 @@ const SearchPage = () => {
             setIsDropdownOpen(false);
         } else {
             axios
-                .get("http://127.0.0.1:8000/data", { params: { query: input } })
+                .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/data", { params: { query: input } })
                 .then((response) => {
                     if (response.data.stocks) {
                         const lowercasedInput = input.toLowerCase();
@@ -225,7 +225,7 @@ const SearchPage = () => {
             setSelectedButton(buttonName); // 현재 버튼 상태 저장
     
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/${endpoint}`, {
+                const response = await axios.get(`https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/${endpoint}`, {
                     params: { stock_name: highlightedStock["종목명"] },
                 });
                 console.log(`${buttonName} API 응답 데이터:`, response.data);

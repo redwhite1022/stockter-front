@@ -4,6 +4,8 @@ import SimpleTable from "./SimpleTable";
 import "../styles/Common.css";
 import "../styles/FinancialStatementsPage.css";
 
+
+
 const FinancialStatementsPage = () => {
     const [stocks, setStocks] = useState([]);
     const [error, setError] = useState("");
@@ -17,7 +19,7 @@ const FinancialStatementsPage = () => {
     const fetchTopStocksByMetric = () => {
         if (currentMetric === "시가총액") {
             axios
-                .get("http://127.0.0.1:8000/top-marketcap")
+                .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-marketcap")
                 .then((response) => {
                     if (response.data.error || response.data.stocks.length === 0) {
                         setError("시가총액 데이터가 없습니다.");
@@ -34,7 +36,7 @@ const FinancialStatementsPage = () => {
                 });
         } else if (currentMetric === "매출액") {
             axios
-                .get("http://127.0.0.1:8000/top-revenue", { params: { year: selectedYear } })
+                .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-revenue", { params: { year: selectedYear } })
                 .then((response) => {
                     if (response.data.error || response.data.stocks.length === 0) {
                         setError("매출액 데이터가 없습니다.");
@@ -51,7 +53,7 @@ const FinancialStatementsPage = () => {
                 });
         } else if (currentMetric === "영업이익") {
             axios
-                .get("http://127.0.0.1:8000/top-operating-income", { params: { year: selectedYear } })
+                .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-operating-income", { params: { year: selectedYear } })
                 .then((response) => {
                     if (response.data.error || response.data.stocks.length === 0) {
                         setError("영업이익 데이터가 없습니다.");
@@ -68,7 +70,7 @@ const FinancialStatementsPage = () => {
                 });
         } else if (currentMetric === "영업이익률") {
             axios
-                .get("http://127.0.0.1:8000/top-operating-income-rate", { params: { year: selectedYear } })
+                .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-operating-income-rate", { params: { year: selectedYear } })
                 .then((response) => {
                     if (response.data.error || response.data.stocks.length === 0) {
                         setError("영업이익률 데이터가 없습니다.");
@@ -85,7 +87,7 @@ const FinancialStatementsPage = () => {
                 });
         } else if (currentMetric === "순이익률") {
             axios
-                .get("http://127.0.0.1:8000/top-net-income", { params: { year: selectedYear } })
+                .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-net-income", { params: { year: selectedYear } })
                 .then((response) => {
                     if (response.data.error || response.data.stocks.length === 0) {
                         setError("순이익률 데이터가 없습니다.");
@@ -102,7 +104,7 @@ const FinancialStatementsPage = () => {
                 });
         } else if (currentMetric === "EPS") {
             axios
-                .get("http://127.0.0.1:8000/top-eps", { params: { year: selectedYear } })
+                .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-eps", { params: { year: selectedYear } })
                 .then((response) => {
                     if (response.data.error || response.data.stocks.length === 0) {
                         setError("EPS 데이터가 없습니다.");
@@ -120,7 +122,7 @@ const FinancialStatementsPage = () => {
         } else if (currentMetric === "PER") {
             const endpoint = perDirection === "top" ? "top-per" : "bottom-per";
             axios
-                .get(`http://127.0.0.1:8000/${endpoint}`, { params: { year: selectedYear } })
+                .get(`https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/${endpoint}`, { params: { year: selectedYear } })
                 .then((response) => {
                     if (response.data.error || response.data.stocks.length === 0) {
                         setError("PER 데이터가 없습니다.");
@@ -138,7 +140,7 @@ const FinancialStatementsPage = () => {
         } else if (currentMetric === "PBR") { // PBR 조건 추가
             const endpoint = pbrDirection === "top" ? "top-pbr" : "bottom-pbr";
             axios
-                .get(`http://127.0.0.1:8000/${endpoint}`, { params: { year: selectedYear } })
+                .get(`https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/${endpoint}`, { params: { year: selectedYear } })
                 .then((response) => {
                     if (response.data.error || response.data.stocks.length === 0) {
                         setError("PBR 데이터가 없습니다.");
@@ -155,7 +157,7 @@ const FinancialStatementsPage = () => {
                 });
         } else if (currentMetric === "시가배당률") { // 시가배당률 조건 추가
             axios
-                .get("http://127.0.0.1:8000/top-dividend-yield", { params: { year: selectedYear } }) // 적절한 엔드포인트 사용
+                .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-dividend-yield", { params: { year: selectedYear } }) // 적절한 엔드포인트 사용
                 .then((response) => {
                     if (response.data.error || response.data.stocks.length === 0) {
                         setError("시가배당률 데이터가 없습니다.");
