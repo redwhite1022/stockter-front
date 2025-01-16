@@ -127,10 +127,17 @@ const FinancialStatementsPage = () => {
                     setStocks([]);
                 });
         }
-        else if (currentMetric === "PER") {
+        if (currentMetric === "PER") {
+            // 화살표가 아래라면(perDirection === "desc") 내림차순 정렬,
+            // 화살표가 위라면(perDirection === "asc") 오름차순 정렬
+            const perEndpoint =
+                perDirection === "desc"
+                    ? "https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-per"
+                    : "https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/bottom-per";
+        
             axios
-                .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/quarterly-financial", {
-                    params: { quarter: "2024-Q1", metric: "PER", order: perDirection, year: selectedYear }
+                .get(perEndpoint, {
+                    params: { year: selectedYear }
                 })
                 .then((response) => {
                     if (response.data.error || response.data.stocks.length === 0) {
@@ -146,11 +153,17 @@ const FinancialStatementsPage = () => {
                     setError("서버와 연결할 수 없습니다.");
                     setStocks([]);
                 });
-        }
-        else if (currentMetric === "PBR") {
+        } else if (currentMetric === "PBR") {
+            // 화살표가 아래라면(pbrDirection === "desc") 내림차순 정렬,
+            // 화살표가 위라면(pbrDirection === "asc") 오름차순 정렬
+            const pbrEndpoint =
+                pbrDirection === "desc"
+                    ? "https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-pbr"
+                    : "https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/bottom-pbr";
+        
             axios
-                .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/quarterly-financial", {
-                    params: { quarter: "2024-Q1", metric: "PBR", order: pbrDirection, year: selectedYear }
+                .get(pbrEndpoint, {
+                    params: { year: selectedYear }
                 })
                 .then((response) => {
                     if (response.data.error || response.data.stocks.length === 0) {
@@ -167,6 +180,8 @@ const FinancialStatementsPage = () => {
                     setStocks([]);
                 });
         }
+        
+        
         
         else if (currentMetric === "시가배당률") {
             axios
