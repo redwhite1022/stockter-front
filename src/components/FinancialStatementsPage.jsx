@@ -128,10 +128,10 @@ const FinancialStatementsPage = () => {
                 });
         }
         else if (currentMetric === "PER") {
-            // PER 위/아래 조건
-            const endpoint = perDirection === "top" ? "top-per" : "bottom-per";
             axios
-                .get(`https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/${endpoint}`, { params: { year: selectedYear } })
+                .get("https://your-backend-domain/quarterly-financial", {
+                    params: { quarter: "2024-Q1", metric: "PER", order: perDirection, year: selectedYear }
+                })
                 .then((response) => {
                     if (response.data.error || response.data.stocks.length === 0) {
                         setError("PER 데이터가 없습니다.");
@@ -148,10 +148,10 @@ const FinancialStatementsPage = () => {
                 });
         }
         else if (currentMetric === "PBR") {
-            // PBR 위/아래 조건
-            const endpoint = pbrDirection === "top" ? "top-pbr" : "bottom-pbr";
             axios
-                .get(`https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/${endpoint}`, { params: { year: selectedYear } })
+                .get("https://your-backend-domain/quarterly-financial", {
+                    params: { quarter: "2024-Q1", metric: "PBR", order: pbrDirection, year: selectedYear }
+                })
                 .then((response) => {
                     if (response.data.error || response.data.stocks.length === 0) {
                         setError("PBR 데이터가 없습니다.");
@@ -167,6 +167,7 @@ const FinancialStatementsPage = () => {
                     setStocks([]);
                 });
         }
+        
         else if (currentMetric === "시가배당률") {
             axios
                 .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-dividend-yield", { params: { year: selectedYear } })
@@ -332,7 +333,7 @@ const FinancialStatementsPage = () => {
                     }}
                 >
                     순이익률
-                    
+
                 </button>
                                 {/* ★ 추가: ROE 버튼 */}
                                 <button
