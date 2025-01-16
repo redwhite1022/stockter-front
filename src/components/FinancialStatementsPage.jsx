@@ -4,18 +4,20 @@ import SimpleTable from "./SimpleTable";
 import "../styles/Common.css";
 import "../styles/FinancialStatementsPage.css";
 
-
-
 const FinancialStatementsPage = () => {
     const [stocks, setStocks] = useState([]);
     const [error, setError] = useState("");
     const [selectedYear, setSelectedYear] = useState(null);
     const [currentMetric, setCurrentMetric] = useState(null);
     const [showYearButtons, setShowYearButtons] = useState(false); // 연도 버튼 표시 여부
-    const [perDirection, setPerDirection] = useState("top"); // PER 방향 상태
-    const [pbrDirection, setPbrDirection] = useState("top"); // PBR 방향 상태
 
-    // 데이터 가져오기
+    // PER/PBR 방향 (위/아래) 상태
+    const [perDirection, setPerDirection] = useState("top");
+    const [pbrDirection, setPbrDirection] = useState("top");
+
+    // ---------------------------
+    // 1) 데이터 가져오기 함수
+    // ---------------------------
     const fetchTopStocksByMetric = () => {
         if (currentMetric === "시가총액") {
             axios
@@ -34,7 +36,8 @@ const FinancialStatementsPage = () => {
                     setError("서버와 연결할 수 없습니다.");
                     setStocks([]);
                 });
-        } else if (currentMetric === "매출액") {
+        } 
+        else if (currentMetric === "매출액") {
             axios
                 .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-revenue", { params: { year: selectedYear } })
                 .then((response) => {
@@ -51,7 +54,8 @@ const FinancialStatementsPage = () => {
                     setError("서버와 연결할 수 없습니다.");
                     setStocks([]);
                 });
-        } else if (currentMetric === "영업이익") {
+        }
+        else if (currentMetric === "영업이익") {
             axios
                 .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-operating-income", { params: { year: selectedYear } })
                 .then((response) => {
@@ -68,7 +72,8 @@ const FinancialStatementsPage = () => {
                     setError("서버와 연결할 수 없습니다.");
                     setStocks([]);
                 });
-        } else if (currentMetric === "영업이익률") {
+        }
+        else if (currentMetric === "영업이익률") {
             axios
                 .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-operating-income-rate", { params: { year: selectedYear } })
                 .then((response) => {
@@ -85,7 +90,8 @@ const FinancialStatementsPage = () => {
                     setError("서버와 연결할 수 없습니다.");
                     setStocks([]);
                 });
-        } else if (currentMetric === "순이익률") {
+        }
+        else if (currentMetric === "순이익률") {
             axios
                 .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-net-income", { params: { year: selectedYear } })
                 .then((response) => {
@@ -102,7 +108,8 @@ const FinancialStatementsPage = () => {
                     setError("서버와 연결할 수 없습니다.");
                     setStocks([]);
                 });
-        } else if (currentMetric === "EPS") {
+        }
+        else if (currentMetric === "EPS") {
             axios
                 .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-eps", { params: { year: selectedYear } })
                 .then((response) => {
@@ -119,7 +126,9 @@ const FinancialStatementsPage = () => {
                     setError("서버와 연결할 수 없습니다.");
                     setStocks([]);
                 });
-        } else if (currentMetric === "PER") {
+        }
+        else if (currentMetric === "PER") {
+            // PER 위/아래 조건
             const endpoint = perDirection === "top" ? "top-per" : "bottom-per";
             axios
                 .get(`https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/${endpoint}`, { params: { year: selectedYear } })
@@ -137,7 +146,9 @@ const FinancialStatementsPage = () => {
                     setError("서버와 연결할 수 없습니다.");
                     setStocks([]);
                 });
-        } else if (currentMetric === "PBR") { // PBR 조건 추가
+        }
+        else if (currentMetric === "PBR") {
+            // PBR 위/아래 조건
             const endpoint = pbrDirection === "top" ? "top-pbr" : "bottom-pbr";
             axios
                 .get(`https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/${endpoint}`, { params: { year: selectedYear } })
@@ -155,9 +166,10 @@ const FinancialStatementsPage = () => {
                     setError("서버와 연결할 수 없습니다.");
                     setStocks([]);
                 });
-        } else if (currentMetric === "시가배당률") { // 시가배당률 조건 추가
+        }
+        else if (currentMetric === "시가배당률") {
             axios
-                .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-dividend-yield", { params: { year: selectedYear } }) // 적절한 엔드포인트 사용
+                .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-dividend-yield", { params: { year: selectedYear } })
                 .then((response) => {
                     if (response.data.error || response.data.stocks.length === 0) {
                         setError("시가배당률 데이터가 없습니다.");
@@ -172,59 +184,91 @@ const FinancialStatementsPage = () => {
                     setError("서버와 연결할 수 없습니다.");
                     setStocks([]);
                 });
-        } else {
+        }
+        // ★ 추가: ROE
+        else if (currentMetric === "ROE") {
+            // 백엔드에 /top-roe 라우트가 있다고 가정 (연도별 "ROE(지배주주)" 컬럼 정렬)
+            axios
+                .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-roe", { params: { year: selectedYear } })
+                .then((response) => {
+                    if (response.data.error || response.data.stocks.length === 0) {
+                        setError("ROE 데이터가 없습니다.");
+                        setStocks([]);
+                    } else {
+                        setStocks(response.data.stocks);
+                        setError("");
+                    }
+                })
+                .catch((error) => {
+                    console.error("데이터 로드 중 오류 발생:", error);
+                    setError("서버와 연결할 수 없습니다.");
+                    setStocks([]);
+                });
+        }
+        else {
             setError(`"${currentMetric}" 기능은 아직 구현되지 않았습니다.`);
             setStocks([]);
         }
     };
 
-    // 버튼 클릭 동작
+    // ---------------------------
+    // 2) 버튼 클릭 동작
+    // ---------------------------
     const handleButtonClick = (metric) => {
+        // PER 위/아래 토글
         if (metric === "PER") {
             if (currentMetric === "PER") {
-                // PER 방향 토글
-                setPerDirection((prevDirection) => (prevDirection === "top" ? "bottom" : "top"));
+                setPerDirection((prev) => (prev === "top" ? "bottom" : "top"));
             } else {
-                setPerDirection("top"); // 기본 방향 설정
+                setPerDirection("top");
             }
-        } else if (metric === "PBR") {
+        }
+        // PBR 위/아래 토글
+        else if (metric === "PBR") {
             if (currentMetric === "PBR") {
-                // PBR 방향 토글
-                setPbrDirection((prevDirection) => (prevDirection === "top" ? "bottom" : "top"));
+                setPbrDirection((prev) => (prev === "top" ? "bottom" : "top"));
             } else {
-                setPbrDirection("top"); // 기본 방향 설정
+                setPbrDirection("top");
             }
         }
 
         setCurrentMetric(metric);
+
+        // 시가총액은 연도가 필요 없음
         if (metric !== "시가총액") {
-            setShowYearButtons(true); // 시가총액 제외 모든 버튼 클릭 시 연도 버튼 표시
-            setSelectedYear("2024"); // 기본 연도 설정
+            setShowYearButtons(true);
+            setSelectedYear("2024");
         } else {
-            setShowYearButtons(false); // 시가총액 클릭 시 연도 버튼 숨기기
+            setShowYearButtons(false);
             setSelectedYear(null);
         }
     };
 
-    // 연도 버튼 클릭 동작
+    // ---------------------------
+    // 3) 연도 버튼 클릭
+    // ---------------------------
     const handleYearButtonClick = (year) => {
         setSelectedYear(year);
     };
 
-    // 데이터 요청 트리거
+    // ---------------------------
+    // 4) useEffect: metric/연도 바뀔 때마다 호출
+    // ---------------------------
     useEffect(() => {
         if (currentMetric) {
             fetchTopStocksByMetric();
         }
-    }, [selectedYear, currentMetric, perDirection, pbrDirection]); // pbrDirection 추가
+    }, [selectedYear, currentMetric, perDirection, pbrDirection]);
 
+    // ---------------------------
+    // 5) JSX
+    // ---------------------------
     return (
         <div className="financial-statements-container">
             <h2 style={{ color: "#007bff", marginBottom: "20px" }}>재무제표</h2>
 
             {/* 정렬기준 버튼 */}
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-                {/* 시가총액 버튼 */}
                 <button
                     onClick={() => handleButtonClick("시가총액")}
                     style={{
@@ -238,7 +282,6 @@ const FinancialStatementsPage = () => {
                     시가총액
                 </button>
 
-                {/* 매출액 버튼 */}
                 <button
                     onClick={() => handleButtonClick("매출액")}
                     style={{
@@ -252,7 +295,6 @@ const FinancialStatementsPage = () => {
                     매출액
                 </button>
 
-                {/* 영업이익 버튼 */}
                 <button
                     onClick={() => handleButtonClick("영업이익")}
                     style={{
@@ -266,7 +308,6 @@ const FinancialStatementsPage = () => {
                     영업이익
                 </button>
 
-                {/* 영업이익률 버튼 */}
                 <button
                     onClick={() => handleButtonClick("영업이익률")}
                     style={{
@@ -280,7 +321,6 @@ const FinancialStatementsPage = () => {
                     영업이익률
                 </button>
 
-                {/* 순이익률 버튼 */}
                 <button
                     onClick={() => handleButtonClick("순이익률")}
                     style={{
@@ -292,9 +332,22 @@ const FinancialStatementsPage = () => {
                     }}
                 >
                     순이익률
+                    
+                </button>
+                                {/* ★ 추가: ROE 버튼 */}
+                                <button
+                    onClick={() => handleButtonClick("ROE")}
+                    style={{
+                        backgroundColor: currentMetric === "ROE" ? "#007bff" : "#fff",
+                        color: currentMetric === "ROE" ? "#fff" : "#000",
+                        border: "1px solid #007bff",
+                        borderRadius: "4px",
+                        padding: "5px 10px",
+                    }}
+                >
+                    ROE
                 </button>
 
-                {/* EPS 버튼 */}
                 <button
                     onClick={() => handleButtonClick("EPS")}
                     style={{
@@ -308,7 +361,6 @@ const FinancialStatementsPage = () => {
                     EPS
                 </button>
 
-                {/* PER 버튼 */}
                 <button
                     onClick={() => handleButtonClick("PER")}
                     style={{
@@ -322,7 +374,6 @@ const FinancialStatementsPage = () => {
                     PER {currentMetric === "PER" ? (perDirection === "top" ? "↑" : "↓") : ""}
                 </button>
 
-                {/* PBR 버튼 */}
                 <button
                     onClick={() => handleButtonClick("PBR")}
                     style={{
@@ -336,7 +387,6 @@ const FinancialStatementsPage = () => {
                     PBR {currentMetric === "PBR" ? (pbrDirection === "top" ? "↑" : "↓") : ""}
                 </button>
 
-                {/* 시가배당률 버튼 */}
                 <button
                     onClick={() => handleButtonClick("시가배당률")}
                     style={{
@@ -349,9 +399,11 @@ const FinancialStatementsPage = () => {
                 >
                     시가배당률
                 </button>
+
+
             </div>
 
-            {/* 연도 버튼들 (시가총액을 제외한 모든 버튼 클릭 시 표시) */}
+            {/* 연도 버튼들 (시가총액 제외) */}
             {showYearButtons && (
                 <div style={{ display: "flex", gap: "5px", marginBottom: "20px" }}>
                     {["2021", "2022", "2023", "2024"].map((year) => (
@@ -378,12 +430,11 @@ const FinancialStatementsPage = () => {
             {stocks.length > 0 && (
                 <SimpleTable
                     stocks={stocks}
-                    columnTitle={currentMetric} // 동적으로 제목 변경
+                    columnTitle={currentMetric}
                 />
             )}
         </div>
     );
-
 };
 
 export default FinancialStatementsPage;

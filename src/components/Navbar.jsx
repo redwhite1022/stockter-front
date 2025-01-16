@@ -11,7 +11,10 @@ const Navbar = () => {
                 종목검색
             </Link>
             <Link to="/financial-statements" className={location.pathname === "/financial-statements" ? "active" : ""}>
-                재무 top100
+                연간 재무 top100
+            </Link>
+            <Link to="/quarterly-financial-statements" className={location.pathname === "/quarterly-financial-statements" ? "active" : ""}>
+                분기별 재무 top100
             </Link>
         </nav>
     );

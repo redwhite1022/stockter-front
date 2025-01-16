@@ -74,7 +74,7 @@ const SearchPage = () => {
                         영업이익: cleanValue(stock["영업이익"]),
                         영업이익률: cleanValue(stock["영업이익률"]),
                         시가배당률: cleanValue(stock["시가배당률(%)"]),
-                        부채비율: cleanValue(stock["부채비율"]), // 부채비율 추가
+                        부채비율: cleanValue(stock["부채비율"]), 
                     }));
     
                     setStocks(mappedData);
@@ -151,6 +151,7 @@ const SearchPage = () => {
     const handleKeyPress = useCallback((e) => {
         if (e.key === "Enter") {
             fetchData();
+            setIsDropdownOpen(false);
         }
     }, [fetchData]);
 
