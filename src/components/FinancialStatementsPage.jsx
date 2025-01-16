@@ -129,7 +129,7 @@ const FinancialStatementsPage = () => {
         }
         else if (currentMetric === "PER") {
             axios
-                .get("https://your-backend-domain/quarterly-financial", {
+                .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/quarterly-financial", {
                     params: { quarter: "2024-Q1", metric: "PER", order: perDirection, year: selectedYear }
                 })
                 .then((response) => {
@@ -149,7 +149,7 @@ const FinancialStatementsPage = () => {
         }
         else if (currentMetric === "PBR") {
             axios
-                .get("https://your-backend-domain/quarterly-financial", {
+                .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/quarterly-financial", {
                     params: { quarter: "2024-Q1", metric: "PBR", order: pbrDirection, year: selectedYear }
                 })
                 .then((response) => {
