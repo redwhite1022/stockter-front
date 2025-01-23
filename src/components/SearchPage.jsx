@@ -331,7 +331,7 @@ const SearchPage = () => {
 
             try {
                 const response = await axios.get(
-                    `http://localhost:8000/${endpoint}`,
+                    `https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/${endpoint}`,
                     { params: { stock_name: highlightedStock["종목명"] } }
                 );
 
