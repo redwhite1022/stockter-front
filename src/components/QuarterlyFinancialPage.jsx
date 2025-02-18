@@ -21,6 +21,7 @@ const QuarterlyFinancialPage = () => {
 
     const apiUrl =
       "https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/quarterly-financial"; // 백엔드 URL
+      // "http://localhost:8000/quarterly-financial";
     // 기본 params: quarter, metric
     const params = { quarter: selectedQuarter, metric: currentMetric };
 

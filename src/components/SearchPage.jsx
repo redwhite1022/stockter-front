@@ -16,16 +16,21 @@ const SearchPage = () => {
     const dropdownRef = useRef(null);
 
     // ========== (1) 연간 데이터 관련 상태 ==========
-    const [annualData, setAnnualData] = useState([]);                // 연간 데이터 배열
-    const [annualLoading, setAnnualLoading] = useState(false);       // 연간 데이터 로딩 상태
-    const [annualError, setAnnualError] = useState("");              // 연간 데이터 오류 메시지
+    const [annualData, setAnnualData] = useState([]);          // 연간 데이터 배열
+    const [annualLoading, setAnnualLoading] = useState(false); // 연간 데이터 로딩 상태
+    const [annualError, setAnnualError] = useState("");        // 연간 데이터 오류 메시지
     const [annualSelectedButton, setAnnualSelectedButton] = useState(""); // 현재 선택된 연간 버튼
 
     // ========== (2) 분기 데이터 관련 상태 ==========
-    const [quarterlyData, setQuarterlyData] = useState([]);          // 분기별 데이터 배열
-    const [quarterlyLoading, setQuarterlyLoading] = useState(false); // 분기 데이터 로딩 상태
-    const [quarterlyError, setQuarterlyError] = useState("");        // 분기 데이터 오류 메시지
-    const [quarterlySelectedButton, setQuarterlySelectedButton] = useState(""); // 현재 선택된 분기 버튼
+    const [quarterlyData, setQuarterlyData] = useState([]);    // 분기별 데이터 배열
+    const [quarterlyLoading, setQuarterlyLoading] = useState(false); 
+    const [quarterlyError, setQuarterlyError] = useState("");
+    const [quarterlySelectedButton, setQuarterlySelectedButton] = useState("");
+
+    // ========== (3) 최신 뉴스 관련 상태 ==========
+    const [newsData, setNewsData] = useState([]);
+    const [newsLoading, setNewsLoading] = useState(false);
+    const [newsError, setNewsError] = useState("");
 
     // 분기 라벨 매핑 객체 (예시: 필요시 수정)
     const quarterLabelMap = {
@@ -33,8 +38,6 @@ const SearchPage = () => {
         "2023.Q2": "2023-Q2",
         "2023.Q3": "2023-Q3",
         "2023.Q4": "2023-Q4",
-        // "2023.Q5": "2024-Q1", // 일반적인 분기 표기법에 맞게 수정
-        // "2023.Q6": "2024-Q2",
     };
 
     // 각각의 차트에 대한 ref (스크롤 용도)
@@ -42,16 +45,8 @@ const SearchPage = () => {
     const quarterlyChartRef = useRef(null);
 
     // ---------------------------
-    // (추가) 뉴스 관련 상태
-    // ---------------------------
-    const [newsList, setNewsList] = useState([]);      // 뉴스 기사 목록
-    const [newsError, setNewsError] = useState("");    // 뉴스 관련 에러메시지
-    const [newsLoading, setNewsLoading] = useState(false); // 뉴스 로딩 상태
-    const [showNews, setShowNews] = useState(false);   // 뉴스 목록 표시 여부
-    const [newsPage, setNewsPage] = useState(1);       // 현재 뉴스 페이지
-    const [totalNewsPages, setTotalNewsPages] = useState(0); // 총 뉴스 페이지 수
-
     // 공백/쉼표 제거
+    // ---------------------------
     const cleanValue = (value) => {
         if (typeof value === "string") {
             return value.replace(/[\s,]+/g, "");
@@ -82,6 +77,7 @@ const SearchPage = () => {
             setIsDropdownOpen(false);
 
             axios
+                // 아래 주소는 배포된 서버 or 로컬 서버 주소에 맞게 수정
                 .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/data", {
                     params: { query: searchQuery },
                 })
@@ -210,13 +206,10 @@ const SearchPage = () => {
         setQuarterlyError("");
         setQuarterlySelectedButton("");
 
-        // 뉴스 관련도 초기화
-        setNewsList([]);
-        setNewsError("");
+        // 최신 뉴스 초기화
+        setNewsData([]);
         setNewsLoading(false);
-        setShowNews(false);
-        setNewsPage(1);
-        setTotalNewsPages(0);
+        setNewsError("");
     }, []);
 
     useEffect(() => {
@@ -233,8 +226,8 @@ const SearchPage = () => {
 
     const highlightMatch = useCallback((text, query) => {
         if (!query) return text;
-        const regex = new RegExp(`(${query})`, "gi"); // 백틱 추가
-        return text.replace(regex, (match) => `<span class="highlight">${match}</span>`); // JSX 요소 대신 문자열 반환
+        const regex = new RegExp(`(${query})`, "gi");
+        return text.replace(regex, (match) => `<span class="highlight">${match}</span>`);
     }, []);
 
     // ---------------------------
@@ -246,7 +239,6 @@ const SearchPage = () => {
                 console.warn("연간 데이터 로딩 중입니다. 잠시만 기다려주세요.");
                 return;
             }
-
             if (!highlightedStock) {
                 setAnnualError("종목을 선택하지 않았습니다. 검색 후 선택해주세요.");
                 return;
@@ -257,7 +249,6 @@ const SearchPage = () => {
             setAnnualData([]);
             setAnnualSelectedButton(buttonName);
 
-            // 엔드포인트 결정
             let endpoint = "";
             if (buttonName === "매출액") {
                 endpoint = "financial-annual-sales";
@@ -277,7 +268,7 @@ const SearchPage = () => {
 
             try {
                 const response = await axios.get(
-                    `https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/${endpoint}`, // 백틱 추가
+                    `https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/${endpoint}`,
                     { params: { stock_name: highlightedStock["종목명"] } }
                 );
 
@@ -297,11 +288,11 @@ const SearchPage = () => {
                 if (data && data.length > 0) {
                     setAnnualData(data);
                 } else {
-                    setAnnualError(`${buttonName} 데이터가 없습니다.`); // 백틱 추가
+                    setAnnualError(`${buttonName} 데이터가 없습니다.`);
                 }
             } catch (error) {
                 console.error("연간 데이터 로드 오류:", error);
-                setAnnualError(`${buttonName} 데이터를 가져오는 중 오류가 발생했습니다.`); // 백틱 추가
+                setAnnualError(`${buttonName} 데이터를 가져오는 중 오류가 발생했습니다.`);
             } finally {
                 setAnnualLoading(false);
             }
@@ -318,7 +309,6 @@ const SearchPage = () => {
                 console.warn("분기별 데이터 로딩 중입니다. 잠시만 기다려주세요.");
                 return;
             }
-
             if (!highlightedStock) {
                 setQuarterlyError("종목을 선택하지 않았습니다. 검색 후 선택해주세요.");
                 return;
@@ -329,7 +319,6 @@ const SearchPage = () => {
             setQuarterlyData([]);
             setQuarterlySelectedButton(buttonName);
 
-            // 엔드포인트 결정 (분기별)
             let endpoint = "";
             if (buttonName === "매출액") {
                 endpoint = "financial-quarterly-sales";
@@ -348,8 +337,10 @@ const SearchPage = () => {
             }
 
             try {
+                // 로컬 개발 환경이면 http://localhost:8000
+                // 배포 환경이면 https://port-0-stockter-back-... 로 변경
                 const response = await axios.get(
-                    `https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/${endpoint}`, // 백틱 추가
+                    `http://localhost:8000/${endpoint}`,
                     { params: { stock_name: highlightedStock["종목명"] } }
                 );
 
@@ -369,11 +360,11 @@ const SearchPage = () => {
                 if (data && data.length > 0) {
                     setQuarterlyData(data);
                 } else {
-                    setQuarterlyError(`${buttonName} 분기별 데이터가 없습니다.`); // 백틱 추가
+                    setQuarterlyError(`${buttonName} 분기별 데이터가 없습니다.`);
                 }
             } catch (error) {
                 console.error("분기별 데이터 로드 오류:", error);
-                setQuarterlyError(`${buttonName} 분기별 데이터를 가져오는 중 오류가 발생했습니다.`); // 백틱 추가
+                setQuarterlyError(`${buttonName} 분기별 데이터를 가져오는 중 오류가 발생했습니다.`);
             } finally {
                 setQuarterlyLoading(false);
             }
@@ -382,7 +373,38 @@ const SearchPage = () => {
     );
 
     // ---------------------------
-    // 6) 자동 스크롤 useEffect (연간/분기)
+    // 6) 최신 뉴스 API 호출 함수
+    // ---------------------------
+    const fetchLatestNews = async () => {
+        if (!highlightedStock) {
+            setNewsError("종목을 선택하지 않았습니다. 검색 후 선택해주세요.");
+            return;
+        }
+        setNewsLoading(true);
+        setNewsError("");
+        setNewsData([]);
+        try {
+            // 로컬이면 http://localhost:8000/latest-news
+            // 배포 주소로 사용 시 변경
+            const response = await axios.get(
+                "https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/latest-news",
+                { params: { stock_name: highlightedStock["종목명"] } }
+            );
+            if (response.data.latest_news && response.data.latest_news.length > 0) {
+                setNewsData(response.data.latest_news);
+            } else {
+                setNewsError("최신 뉴스 데이터가 없습니다.");
+            }
+        } catch (error) {
+            console.error("최신 뉴스 로드 오류:", error);
+            setNewsError("최신 뉴스 데이터를 가져오는 중 오류가 발생했습니다.");
+        } finally {
+            setNewsLoading(false);
+        }
+    };
+
+    // ---------------------------
+    // 7) 자동 스크롤 useEffect (연간/분기)
     // ---------------------------
     useEffect(() => {
         if (annualData.length > 0 && annualChartRef.current) {
@@ -404,8 +426,8 @@ const SearchPage = () => {
         datasets: [
             {
                 label: isPercentage(annualSelectedButton)
-                    ? `${annualSelectedButton} (%)` // 백틱 추가
-                    : `${annualSelectedButton} (억)`, // 백틱 추가
+                    ? `${annualSelectedButton} (%)`
+                    : `${annualSelectedButton} (억)`,
                 data: annualData.map((item) => item[annualSelectedButton]),
                 backgroundColor:
                     annualSelectedButton === "매출액"
@@ -444,8 +466,8 @@ const SearchPage = () => {
         datasets: [
             {
                 label: isPercentage(quarterlySelectedButton)
-                    ? `${quarterlySelectedButton} (%)` // 백틱 추가
-                    : `${quarterlySelectedButton} (억)`, // 백틱 추가
+                    ? `${quarterlySelectedButton} (%)`
+                    : `${quarterlySelectedButton} (억)`,
                 data: quarterlyData.map((item) => item[quarterlySelectedButton]),
                 backgroundColor:
                     quarterlySelectedButton === "매출액"
@@ -477,65 +499,7 @@ const SearchPage = () => {
     };
 
     // ---------------------------
-    // (C) 최신 뉴스 가져오기 함수
-    // ---------------------------
-
-    const fetchLatestNews = async () => {
-        if (!highlightedStock) {
-            setNewsError("종목을 먼저 검색/선택해주세요.");
-            return;
-        }
-
-        try {
-            setNewsLoading(true);
-            setNewsError("");
-            setNewsList([]);
-            setShowNews(false);
-            setNewsPage(1); // 초기 페이지 설정
-            setTotalNewsPages(0); // 초기화
-
-            // 백엔드 주소: 예) https://.../news
-            const response = await axios.get(
-                "https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/news",
-                { params: { stock_name: highlightedStock["종목명"] } }
-            );
-
-            // 백엔드에서 { error, news } 형태로 반환된다고 가정
-            if (response.data.error) {
-                setNewsError(response.data.error);
-                setNewsLoading(false);
-                return;
-            }
-
-            // 정상 응답
-            const fetchedNews = response.data.news || [];
-            console.log("Fetched News Count:", fetchedNews.length); // 디버깅용 로그
-            setNewsList(fetchedNews);
-            setShowNews(true);
-
-            // 총 페이지 수 계산 (10개씩)
-            const pages = Math.ceil(fetchedNews.length / 10);
-            console.log("Total News Pages:", pages); // 디버깅용 로그
-            setTotalNewsPages(pages > 3 ? 3 : pages); // 최대 3페이지로 제한
-        } catch (error) {
-            console.error("백엔드 뉴스 API 요청 오류:", error);
-            setNewsError("뉴스 로딩 중 서버 오류가 발생했습니다.");
-        } finally {
-            setNewsLoading(false);
-        }
-    };
-
-
-    // ---------------------------
-    // 7) 뉴스 페이지 변경 핸들러
-    // ---------------------------
-    const handleNewsPageChange = (page) => {
-        console.log("Changing to News Page:", page); // 디버깅용 로그
-        setNewsPage(page);
-    };
-
-    // ---------------------------
-    // 8) JSX 반환
+    // JSX 반환
     // ---------------------------
     return (
         <div className="search-page-container">
@@ -621,7 +585,7 @@ const SearchPage = () => {
                 />
             )}
 
-            {/* ========== (A) 연간 재무데이터 영역 ========== */}
+            {/* (A) 연간 재무데이터 영역 */}
             {stocks.length > 0 && (
                 <>
                     <h3 style={{ marginTop: "30px", marginBottom: "10px", color: "#333" }}>
@@ -670,11 +634,9 @@ const SearchPage = () => {
                         </button>
                     </div>
 
-                    {/* 연간 데이터 로딩/오류 메시지 */}
                     {annualLoading && <p>연간 데이터를 로드 중입니다...</p>}
                     {annualError && <p className="error-message">{annualError}</p>}
 
-                    {/* 연간 차트 */}
                     {annualData && annualData.length > 0 && (
                         <div
                             className="financial-data-chart"
@@ -690,7 +652,7 @@ const SearchPage = () => {
                                         legend: { position: "top" },
                                         title: {
                                             display: true,
-                                            text: `${highlightedStock?.종목명 || ""} 연간 ${annualSelectedButton}`, // 백틱으로 수정
+                                            text: `${highlightedStock?.종목명 || ""} 연간 ${annualSelectedButton}`,
                                         },
                                     },
                                     scales: {
@@ -713,7 +675,7 @@ const SearchPage = () => {
                 </>
             )}
 
-            {/* ========== (B) 분기별 재무데이터 영역 ========== */}
+            {/* (B) 분기별 재무데이터 영역 */}
             {stocks.length > 0 && (
                 <>
                     <h3 style={{ marginTop: "30px", marginBottom: "10px", color: "#333" }}>
@@ -762,11 +724,9 @@ const SearchPage = () => {
                         </button>
                     </div>
 
-                    {/* 분기별 데이터 로딩/오류 메시지 */}
                     {quarterlyLoading && <p>분기별 데이터를 로드 중입니다...</p>}
                     {quarterlyError && <p className="error-message">{quarterlyError}</p>}
 
-                    {/* 분기별 차트 */}
                     {quarterlyData && quarterlyData.length > 0 && (
                         <div
                             className="financial-data-chart"
@@ -782,7 +742,7 @@ const SearchPage = () => {
                                         legend: { position: "top" },
                                         title: {
                                             display: true,
-                                            text: `${highlightedStock?.종목명 || ""} 분기별 ${quarterlySelectedButton}`, // 백틱으로 수정
+                                            text: `${highlightedStock?.종목명 || ""} 분기별 ${quarterlySelectedButton}`,
                                         },
                                     },
                                     scales: {
@@ -805,75 +765,32 @@ const SearchPage = () => {
                 </>
             )}
 
-            {/* =========================
-                (C) 최신 뉴스 영역
-                ========================= */}
+            {/* ========== 최신 뉴스 영역 (페이지 하단) ========== */}
             {highlightedStock && (
-                <div style={{ marginTop: "30px" }}>
+                <div className="latest-news-section" style={{ marginTop: "30px" }}>
                     <h3>최신 뉴스</h3>
                     <button onClick={fetchLatestNews} disabled={newsLoading}>
                         {newsLoading ? "뉴스 로딩 중..." : "최신 뉴스 가져오기"}
                     </button>
                     {newsError && <p className="error-message">{newsError}</p>}
-
-                    {/* 페이지 버튼 */}
-                    {totalNewsPages > 0 && (
-                        <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
-                            {[1, 2, 3].map((page) => (
-                                <button
-                                    key={page}
-                                    onClick={() => handleNewsPageChange(page)}
-                                    disabled={page > totalNewsPages}
-                                    className={newsPage === page ? "active-page-button" : ""}
-                                >
-                                    {page}
-                                </button>
+                    {newsData && newsData.length > 0 && (
+                        <ul className="news-list">
+                            {newsData.map((newsItem, index) => (
+                                <li key={index}>
+                                    {/* 기사 링크 연결 */}
+                                    <a href={newsItem.link} target="_blank" rel="noopener noreferrer">
+                                        {newsItem.title}
+                                    </a>
+                                    <p>{newsItem.summary}</p>
+                                    <span>{newsItem.date}</span>
+                                </li>
                             ))}
-                        </div>
-                    )}
-
-                    {/* 뉴스 목록 */}
-                    {showNews && newsList.length > 0 && (
-                        <ul style={{ marginTop: "10px" }}>
-                            {newsList
-                                .slice((newsPage - 1) * 10, newsPage * 10)
-                                .map((news, index) => (
-                                    <li
-                                        key={index}
-                                        style={{
-                                            marginBottom: "6px",
-                                            // 읽었으면 회색, 아니면 파란색
-                                            color: news.read ? "gray" : "#007bff",
-                                            cursor: "pointer",
-                                        }}
-                                        onClick={() => {
-                                            // 1) 새 탭으로 열기
-                                            window.open(news.link, "_blank", "noopener,noreferrer");
-
-                                            // 2) 읽은 상태로 표시
-                                            setNewsList((prevList) => {
-                                                const newList = [...prevList];
-                                                newList[index + (newsPage - 1) * 10] = {
-                                                    ...newList[index + (newsPage - 1) * 10],
-                                                    read: true,
-                                                };
-                                                return newList;
-                                            });
-                                        }}
-                                    >
-                                        {news.title}
-                                    </li>
-                                ))}
                         </ul>
                     )}
-
-                    {/* 뉴스 데이터가 부족할 때 사용자에게 알리기 */}
-                    {showNews && newsList.length === 0 && <p>뉴스가 없습니다.</p>}
                 </div>
             )}
         </div>
     );
-
 };
 
 export default SearchPage;
