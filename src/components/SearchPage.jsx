@@ -340,7 +340,7 @@ const SearchPage = () => {
                 // 로컬 개발 환경이면 http://localhost:8000
                 // 배포 환경이면 https://port-0-stockter-back-... 로 변경
                 const response = await axios.get(
-                    `http://localhost:8000/${endpoint}`,
+                    `https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/${endpoint}`,
                     { params: { stock_name: highlightedStock["종목명"] } }
                 );
 
