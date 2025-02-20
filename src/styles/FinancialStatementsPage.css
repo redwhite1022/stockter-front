@@ -1,26 +1,110 @@
-.table-container table {
+/* ========================= */
+/* 재무제표 페이지 기본 스타일 */
+/* ========================= */
+
+.financial-statements-container {
+    padding: 20px;
+  }
+  
+  .financial-statements-container h2 {
+    color: #007bff;
+    margin-bottom: 20px;
+  }
+  
+  /* ========================= */
+  /* 정렬 기준 버튼 스타일 */
+  /* ========================= */
+  
+  /* 버튼 그룹 컨테이너 */
+  .button-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  /* 정렬 기준 버튼 기본 스타일 */
+  .button-group button {
+    background-color: white;
+    color: black;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* 활성화된 정렬 기준 버튼 */
+  .button-group button.active {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  /* ========================= */
+  /* 연도 버튼 스타일 */
+  /* ========================= */
+  
+  /* 연도 버튼들을 감싸는 컨테이너 */
+  .year-buttons {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+  }
+  
+  /* 연도 버튼 기본 스타일 */
+  .year-buttons button {
+    background-color: white;
+    color: black;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* 활성화된 연도 버튼 */
+  .year-buttons button.active {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  /* ========================= */
+  /* 테이블 스타일 */
+  /* ========================= */
+  
+  .table-container table {
     width: 100%;
     border-collapse: collapse;
-}
-
-.table-container table th {
+  }
+  
+  .table-container table th {
     background-color: #d9d9d9; /* 진한 회색 배경 */
     color: #333;
     font-weight: bold;
     text-align: center;
     padding: 10px;
-}
-
-.table-container table td {
+  }
+  
+  .table-container table td {
     text-align: center;
     padding: 8px;
     border: 1px solid #ddd;
-}
-
-.table-container table tr:nth-child(even) {
+  }
+  
+  .table-container table tr:nth-child(even) {
     background-color: #f9f9f9;
-}
-
-.table-container table tr:hover {
+  }
+  
+  .table-container table tr:hover {
     background-color: #f1f1f1;
-}
+  }
+  
+  /* ========================= */
+  /* 오류 메시지 스타일 */
+  /* ========================= */
+  
+  .error-message {
+    color: red;
+    font-weight: bold;
+  }
+  

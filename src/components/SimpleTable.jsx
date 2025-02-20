@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles/FinancialStatementsPage.css";
 
 const SimpleTable = ({ stocks, columnTitle }) => {
     return (

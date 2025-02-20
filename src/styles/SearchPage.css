@@ -1,19 +1,24 @@
-
+/* ========================= */
+/* Global Styles */
+/* ========================= */
 body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
-}
-
-.container {
+  }
+  
+  .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-}
-
-.header {
+  }
+  
+  /* ========================= */
+  /* Header & Navbar */
+  /* ========================= */
+  .header {
     width: 100%;
     background-color: #007bff;
     padding: 20px 0;
@@ -21,9 +26,9 @@ body {
     color: white;
     font-size: 24px;
     font-weight: bold;
-}
-
-.navbar {
+  }
+  
+  .navbar {
     width: 100%;
     background-color: #ffffff;
     padding: 10px 0;
@@ -31,9 +36,9 @@ body {
     justify-content: center;
     gap: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.navbar a {
+  }
+  
+  .navbar a {
     text-decoration: none;
     color: #007bff;
     font-size: 18px;
@@ -41,79 +46,75 @@ body {
     border: 1px solid #007bff;
     border-radius: 4px;
     transition: background-color 0.3s, color 0.3s;
-}
-
-.navbar a:hover {
+  }
+  
+  .navbar a:hover {
     background-color: #007bff;
     color: white;
-}
-
-.content {
+  }
+  
+  /* ========================= */
+  /* Content Layout */
+  /* ========================= */
+  .content {
     flex: 1;
     width: 100vw; /* 브라우저 전체 너비 */
-    max-width: 100%; /* 최대 너비를 브라우저 크기로 제한 */
+    max-width: 1200px; /* 최대 너비 */
     padding: 20px;
-    box-sizing: border-box; /* 패딩 포함 크기 계산 */
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 1200px; /* 최대 너비 */
-}
-
-.search-page-container {
-    max-width: 1200px;
-    margin: 0 auto;
+  }
+  
+  /* ========================= */
+  /* Table Container */
+  /* ========================= */
+  .table-container {
+    width: 100vw;
+    max-width: 100%;
+    margin: 20px 0;
+    overflow-x: auto;
+    overflow-y: auto;
     padding: 0 10px;
     box-sizing: border-box;
-}
-
-.table-container {
-    width: 100vw; /* 브라우저 전체 너비 */
-    max-width: 100%; /* 최대 너비를 브라우저 크기로 제한 */
-    margin: 20px 0; /* 위아래 여백 */
-    overflow-x: auto; /* 가로 스크롤 활성화 */
-    overflow-y: auto;
-    padding: 0 10px; /* 좌우 여백 추가 */
-    box-sizing: border-box; /* 패딩 포함 크기 계산 */
-}
-
-.table-container table {
+  }
+  
+  .table-container table {
     width: 100%;
     border-collapse: collapse;
     background-color: #fff;
     min-width: 600px;
-}
-
-.table-container th,
-.table-container td {
+  }
+  
+  .table-container th,
+  .table-container td {
     padding: 12px 15px;
     border: 1px solid #ddd;
     text-align: left;
     white-space: nowrap;
-}
-
-.table-container th {
+  }
+  
+  .table-container th {
     background-color: #f2f2f2;
-}
-
-.error-message {
-    color: red;
-    margin-top: 20px;
-}
-
-button {
+  }
+  
+  /* ========================= */
+  /* Global Form & Button Defaults */
+  /* ========================= */
+  button {
     cursor: pointer;
-}
-
-input[type="text"] {
+  }
+  
+  input[type="text"] {
     width: 100%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px 0 0 4px;
-}
-
-button.search-button {
+  }
+  
+  button.search-button {
     padding: 10px 20px;
     font-size: 16px;
     background: #007bff;
@@ -122,13 +123,16 @@ button.search-button {
     border-radius: 0 4px 4px 0;
     cursor: pointer;
     min-width: 120px;
-}
-
-button.search-button:hover {
+  }
+  
+  button.search-button:hover {
     background: #0056b3;
-}
-
-.dropdown {
+  }
+  
+  /* ========================= */
+  /* Dropdown */
+  /* ========================= */
+  .dropdown {
     position: absolute;
     top: 50px;
     width: 100%;
@@ -138,139 +142,193 @@ button.search-button:hover {
     z-index: 1000;
     max-height: 200px;
     overflow-y: auto;
-}
-
-.dropdown-item {
+  }
+  
+  .dropdown-item {
     padding: 8px;
     cursor: pointer;
     border-bottom: 1px solid #eee;
     transition: background-color 0.2s ease;
     display: flex;
     justify-content: space-between;
-}
-
-.dropdown-item:hover {
+  }
+  
+  .dropdown-item:hover {
     background-color: #e6f7ff;
-}
-
-.highlight {
+  }
+  
+  .dropdown-code {
+    margin-left: 10px;
+    color: gray;
+  }
+  
+  .highlight {
     color: red;
-}
-
-.search-page-container {
+  }
+  
+  /* ========================= */
+  /* Search Page Specific Styles */
+  /* ========================= */
+  .search-page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 10px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100vw; /* 브라우저 전체 너비 */
-    max-width: 100%; /* 최대 너비를 브라우저 크기로 제한 */
-    padding: 0 10px; /* 좌우 여백 추가 */
-    box-sizing: border-box; /* 패딩 포함 크기 계산 */
-}
-
-.financial-statements-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 100vw;
+    max-width: 100%;
+  }
+  
+  .search-page-title {
+    cursor: pointer;
+    color: #007bff;
+    margin-bottom: 20px;
+  }
+  
+  /* 검색 입력창 영역 */
+  .search-input-container {
+    position: relative;
     width: 100%;
-    max-width: 800px;
-}
-
-/* src/styles/SearchPage.css */
-.highlighted-stock {
+    max-width: 600px;
+    margin-bottom: 20px;
+  }
+  
+  .search-input-wrapper {
+    display: flex;
+  }
+  
+  /* ========================= */
+  /* Highlighted Stock Info */
+  /* ========================= */
+  .highlighted-stock {
     border: 1px solid #ddd;
     padding: 10px;
     margin-bottom: 20px;
     background-color: #f9f9f9;
     border-radius: 5px;
-}
-.highlighted-stock h3 {
+  }
+  
+  .highlighted-stock h3 {
     margin-bottom: 10px;
     font-size: 1.2em;
-}
-.highlighted-stock p {
+  }
+  
+  .highlighted-stock p {
     margin: 5px 0;
     font-size: 1em;
     color: #333;
-}
-.annual-sales {
+  }
+  
+  /* ========================= */
+  /* Financial Statements Container */
+  /* ========================= */
+  .financial-statements-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+  }
+  
+  /* ========================= */
+  /* Annual & Quarterly Data */
+  /* ========================= */
+  
+  /* 제목 */
+  .annual-data-title,
+  .quarterly-data-title {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  /* 버튼 그룹 */
+  .annual-buttons-container,
+  .quarterly-buttons-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  
+  /* 차트 영역 (공용) - 높이를 400px로 설정 */
+  .chart-container {
+    width: 100% !important;
+    max-width: 800px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+  }
+  
+  .chart-container canvas {
+    width: 100% !important;
+    height: auto !important;
+    display: block !important;
+  }
+  
+  .financial-data-chart,
+  .financial-chart {
+    width: 100%;
+    margin-top: 20px;
+    height: 400px;
+  }
+  
+  /* 연간 매출 등 추가 클래스 */
+  .annual-sales {
     width: 100% !important;
     max-width: 1200px;
     margin: 0 auto;
-}
-
-.chart-container {
-    width: 100% !important;
-    max-width: 800px !important; /* 재무 정보 테이블과 동일한 최대 너비 */
-    margin: 0 auto !important; /* 가운데 정렬 */
-    padding: 0 !important;
-}
-
-.chart-container canvas {
-    width: 100% !important;
-    height: auto !important; /* 비율 유지 */
-    display: block !important;
-}
-
-.financial-data-chart {
-    width: 100%;
-    margin-top: 20px;
-}
-
-
-
-
-@media (max-width: 768px) {
+  }
+  
+  /* ========================= */
+  /* Latest News Section */
+  /* ========================= */
+  .latest-news-section {
+    margin-top: 30px;
+  }
+  
+  /* ========================= */
+  /* Media Queries */
+  /* ========================= */
+  @media (max-width: 768px) {
     .navbar a {
-        font-size: 16px;
-        padding: 8px 16px;
+      font-size: 16px;
+      padding: 8px 16px;
     }
-
     .header {
-        font-size: 20px;
+      font-size: 20px;
     }
-
     .content,
     .search-page-container,
     .table-container {
-        width: 100vw; /* 브라우저 전체 너비 */
-        max-width: 100%; /* 브라우저 최대 크기로 제한 */
-        padding: 0 5px; /* 작은 화면에서 좌우 여백 축소 */
-        box-sizing: border-box; /* 패딩 포함 크기 계산 */
+      width: 100vw;
+      max-width: 100%;
+      padding: 0 5px;
+      box-sizing: border-box;
     }
-
     .table-container table {
-        font-size: 14px; /* 작은 화면에서 글씨 크기 축소 */
+      font-size: 14px;
     }
-
     .table-container th,
     .table-container td {
-        padding: 8px; /* 작은 화면에서 셀 여백 축소 */
-    }    
-
+      padding: 8px;
+    }
     .annual-sales {
-        width: 100% !important;
-        max-width: 1200px;
-        margin: 0 auto;
+      width: 100% !important;
+      max-width: 1200px;
+      margin: 0 auto;
     }
-    
     .chart-container {
-        width: 100% !important;
-        max-width: 800px !important; /* 재무 정보 테이블과 동일한 최대 너비 */
-        margin: 0 auto !important; /* 가운데 정렬 */
-        padding: 0 !important;
+      width: 100% !important;
+      max-width: 800px !important;
+      margin: 0 auto !important;
+      padding: 0 !important;
     }
-    
     .chart-container canvas {
-        width: 100% !important;
-        height: auto !important; /* 비율 유지 */
-        display: block !important;
+      width: 100% !important;
+      height: auto !important;
+      display: block !important;
     }
-    
-    
-    
-    
-    
-    
-
-}
-
+  }
+  

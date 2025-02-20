@@ -9,16 +9,12 @@ const FinancialStatementsPage = () => {
   const [error, setError] = useState("");
   const [selectedYear, setSelectedYear] = useState(null);
   const [currentMetric, setCurrentMetric] = useState(null);
-  const [showYearButtons, setShowYearButtons] = useState(false); // 연도 버튼 표시 여부
+  const [showYearButtons, setShowYearButtons] = useState(false);
 
-  // PER/PBR 방향 (오름차순/내림차순) 상태
-  // "asc": 오름차순, "desc": 내림차순
+  // PER/PBR 방향 (오름차순/내림차순)
   const [perDirection, setPerDirection] = useState("asc");
   const [pbrDirection, setPbrDirection] = useState("asc");
 
-  // ---------------------------
-  // 1) 데이터 가져오기 함수
-  // ---------------------------
   const fetchTopStocksByMetric = () => {
     if (currentMetric === "시가총액") {
       axios
@@ -37,8 +33,7 @@ const FinancialStatementsPage = () => {
           setError("서버와 연결할 수 없습니다.");
           setStocks([]);
         });
-    } 
-    else if (currentMetric === "매출액") {
+    } else if (currentMetric === "매출액") {
       axios
         .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-revenue", { params: { year: selectedYear } })
         .then((response) => {
@@ -55,8 +50,7 @@ const FinancialStatementsPage = () => {
           setError("서버와 연결할 수 없습니다.");
           setStocks([]);
         });
-    }
-    else if (currentMetric === "영업이익") {
+    } else if (currentMetric === "영업이익") {
       axios
         .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-operating-income", { params: { year: selectedYear } })
         .then((response) => {
@@ -73,8 +67,7 @@ const FinancialStatementsPage = () => {
           setError("서버와 연결할 수 없습니다.");
           setStocks([]);
         });
-    }
-    else if (currentMetric === "영업이익률") {
+    } else if (currentMetric === "영업이익률") {
       axios
         .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-operating-income-rate", { params: { year: selectedYear } })
         .then((response) => {
@@ -91,8 +84,7 @@ const FinancialStatementsPage = () => {
           setError("서버와 연결할 수 없습니다.");
           setStocks([]);
         });
-    }
-    else if (currentMetric === "순이익률") {
+    } else if (currentMetric === "순이익률") {
       axios
         .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-net-income", { params: { year: selectedYear } })
         .then((response) => {
@@ -109,8 +101,7 @@ const FinancialStatementsPage = () => {
           setError("서버와 연결할 수 없습니다.");
           setStocks([]);
         });
-    }
-    else if (currentMetric === "EPS") {
+    } else if (currentMetric === "EPS") {
       axios
         .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-eps", { params: { year: selectedYear } })
         .then((response) => {
@@ -127,15 +118,11 @@ const FinancialStatementsPage = () => {
           setError("서버와 연결할 수 없습니다.");
           setStocks([]);
         });
-    }
-    else if (currentMetric === "PER") {
-      // perDirection이 "desc"이면 내림차순 정렬 (top-per),
-      // "asc"이면 오름차순 정렬 (bottom-per)
+    } else if (currentMetric === "PER") {
       const perEndpoint =
         perDirection === "desc"
           ? "https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-per"
           : "https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/bottom-per";
-      
       axios
         .get(perEndpoint, { params: { year: selectedYear } })
         .then((response) => {
@@ -152,15 +139,11 @@ const FinancialStatementsPage = () => {
           setError("서버와 연결할 수 없습니다.");
           setStocks([]);
         });
-    }
-    else if (currentMetric === "PBR") {
-      // pbrDirection이 "desc"이면 내림차순 정렬 (top-pbr),
-      // "asc"이면 오름차순 정렬 (bottom-pbr)
+    } else if (currentMetric === "PBR") {
       const pbrEndpoint =
         pbrDirection === "desc"
           ? "https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-pbr"
           : "https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/bottom-pbr";
-      
       axios
         .get(pbrEndpoint, { params: { year: selectedYear } })
         .then((response) => {
@@ -177,8 +160,7 @@ const FinancialStatementsPage = () => {
           setError("서버와 연결할 수 없습니다.");
           setStocks([]);
         });
-    }
-    else if (currentMetric === "시가배당률") {
+    } else if (currentMetric === "시가배당률") {
       axios
         .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-dividend-yield", { params: { year: selectedYear } })
         .then((response) => {
@@ -195,9 +177,7 @@ const FinancialStatementsPage = () => {
           setError("서버와 연결할 수 없습니다.");
           setStocks([]);
         });
-    }
-    // ★ 추가: ROE
-    else if (currentMetric === "ROE") {
+    } else if (currentMetric === "ROE") {
       axios
         .get("https://port-0-stockter-back-m5or7nt39f4a0f5c.sel4.cloudtype.app/top-roe", { params: { year: selectedYear } })
         .then((response) => {
@@ -214,36 +194,27 @@ const FinancialStatementsPage = () => {
           setError("서버와 연결할 수 없습니다.");
           setStocks([]);
         });
-    }
-    else {
+    } else {
       setError(`"${currentMetric}" 기능은 아직 구현되지 않았습니다.`);
       setStocks([]);
     }
   };
 
-  // ---------------------------
-  // 2) 버튼 클릭 동작
-  // ---------------------------
   const handleButtonClick = (metric) => {
     if (metric === "PER") {
       if (currentMetric === "PER") {
-        // PER 방향 토글: "asc" <-> "desc"
         setPerDirection((prevDirection) => (prevDirection === "asc" ? "desc" : "asc"));
       } else {
-        setPerDirection("asc"); // 기본 오름차순
+        setPerDirection("asc");
       }
     } else if (metric === "PBR") {
       if (currentMetric === "PBR") {
-        // PBR 방향 토글: "asc" <-> "desc"
         setPbrDirection((prevDirection) => (prevDirection === "asc" ? "desc" : "asc"));
       } else {
-        setPbrDirection("asc"); // 기본 오름차순
+        setPbrDirection("asc");
       }
     }
-
     setCurrentMetric(metric);
-
-    // 시가총액은 연도가 필요 없음
     if (metric !== "시가총액") {
       setShowYearButtons(true);
       setSelectedYear("2024");
@@ -253,178 +224,78 @@ const FinancialStatementsPage = () => {
     }
   };
 
-  // ---------------------------
-  // 3) 연도 버튼 클릭
-  // ---------------------------
   const handleYearButtonClick = (year) => {
     setSelectedYear(year);
   };
 
-  // ---------------------------
-  // 4) useEffect: metric/연도/정렬 방향 바뀔 때마다 호출
-  // ---------------------------
   useEffect(() => {
     if (currentMetric) {
       fetchTopStocksByMetric();
     }
   }, [selectedYear, currentMetric, perDirection, pbrDirection]);
 
-  // ---------------------------
-  // 5) JSX
-  // ---------------------------
   return (
     <div className="financial-statements-container">
-      <h2 style={{ color: "#007bff", marginBottom: "20px" }}>재무제표</h2>
+      <h2 className="financial-statements-title">재무제표</h2>
 
-      {/* 정렬기준 버튼 */}
-      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-        <button
-          onClick={() => handleButtonClick("시가총액")}
-          style={{
-            backgroundColor: currentMetric === "시가총액" ? "#007bff" : "#fff",
-            color: currentMetric === "시가총액" ? "#fff" : "#000",
-            border: "1px solid #007bff",
-            borderRadius: "4px",
-            padding: "5px 10px",
-          }}
-        >
+      <div className="button-group">
+        <button onClick={() => handleButtonClick("시가총액")}
+                className={currentMetric === "시가총액" ? "active" : ""}>
           시가총액
         </button>
 
-        <button
-          onClick={() => handleButtonClick("매출액")}
-          style={{
-            backgroundColor: currentMetric === "매출액" ? "#007bff" : "#fff",
-            color: currentMetric === "매출액" ? "#fff" : "#000",
-            border: "1px solid #007bff",
-            borderRadius: "4px",
-            padding: "5px 10px",
-          }}
-        >
+        <button onClick={() => handleButtonClick("매출액")}
+                className={currentMetric === "매출액" ? "active" : ""}>
           매출액
         </button>
 
-        <button
-          onClick={() => handleButtonClick("영업이익")}
-          style={{
-            backgroundColor: currentMetric === "영업이익" ? "#007bff" : "#fff",
-            color: currentMetric === "영업이익" ? "#fff" : "#000",
-            border: "1px solid #007bff",
-            borderRadius: "4px",
-            padding: "5px 10px",
-          }}
-        >
+        <button onClick={() => handleButtonClick("영업이익")}
+                className={currentMetric === "영업이익" ? "active" : ""}>
           영업이익
         </button>
 
-        <button
-          onClick={() => handleButtonClick("영업이익률")}
-          style={{
-            backgroundColor: currentMetric === "영업이익률" ? "#007bff" : "#fff",
-            color: currentMetric === "영업이익률" ? "#fff" : "#000",
-            border: "1px solid #007bff",
-            borderRadius: "4px",
-            padding: "5px 10px",
-          }}
-        >
+        <button onClick={() => handleButtonClick("영업이익률")}
+                className={currentMetric === "영업이익률" ? "active" : ""}>
           영업이익률
         </button>
 
-        <button
-          onClick={() => handleButtonClick("순이익률")}
-          style={{
-            backgroundColor: currentMetric === "순이익률" ? "#007bff" : "#fff",
-            color: currentMetric === "순이익률" ? "#fff" : "#000",
-            border: "1px solid #007bff",
-            borderRadius: "4px",
-            padding: "5px 10px",
-          }}
-        >
+        <button onClick={() => handleButtonClick("순이익률")}
+                className={currentMetric === "순이익률" ? "active" : ""}>
           순이익률
         </button>
 
-        {/* ★ 추가: ROE 버튼 */}
-        <button
-          onClick={() => handleButtonClick("ROE")}
-          style={{
-            backgroundColor: currentMetric === "ROE" ? "#007bff" : "#fff",
-            color: currentMetric === "ROE" ? "#fff" : "#000",
-            border: "1px solid #007bff",
-            borderRadius: "4px",
-            padding: "5px 10px",
-          }}
-        >
+        <button onClick={() => handleButtonClick("ROE")}
+                className={currentMetric === "ROE" ? "active" : ""}>
           ROE
         </button>
 
-        <button
-          onClick={() => handleButtonClick("EPS")}
-          style={{
-            backgroundColor: currentMetric === "EPS" ? "#007bff" : "#fff",
-            color: currentMetric === "EPS" ? "#fff" : "#000",
-            border: "1px solid #007bff",
-            borderRadius: "4px",
-            padding: "5px 10px",
-          }}
-        >
+        <button onClick={() => handleButtonClick("EPS")}
+                className={currentMetric === "EPS" ? "active" : ""}>
           EPS
         </button>
 
-        <button
-          onClick={() => handleButtonClick("PER")}
-          style={{
-            backgroundColor: currentMetric === "PER" ? "#007bff" : "#fff",
-            color: currentMetric === "PER" ? "#fff" : "#000",
-            border: "1px solid #007bff",
-            borderRadius: "4px",
-            padding: "5px 10px",
-          }}
-        >
+        <button onClick={() => handleButtonClick("PER")}
+                className={currentMetric === "PER" ? "active" : ""}>
           PER {currentMetric === "PER" ? (perDirection === "asc" ? "↑" : "↓") : ""}
         </button>
 
-        <button
-          onClick={() => handleButtonClick("PBR")}
-          style={{
-            backgroundColor: currentMetric === "PBR" ? "#007bff" : "#fff",
-            color: currentMetric === "PBR" ? "#fff" : "#000",
-            border: "1px solid #007bff",
-            borderRadius: "4px",
-            padding: "5px 10px",
-          }}
-        >
+        <button onClick={() => handleButtonClick("PBR")}
+                className={currentMetric === "PBR" ? "active" : ""}>
           PBR {currentMetric === "PBR" ? (pbrDirection === "asc" ? "↑" : "↓") : ""}
         </button>
 
-        <button
-          onClick={() => handleButtonClick("시가배당률")}
-          style={{
-            backgroundColor: currentMetric === "시가배당률" ? "#007bff" : "#fff",
-            color: currentMetric === "시가배당률" ? "#fff" : "#000",
-            border: "1px solid #007bff",
-            borderRadius: "4px",
-            padding: "5px 10px",
-          }}
-        >
+        <button onClick={() => handleButtonClick("시가배당률")}
+                className={currentMetric === "시가배당률" ? "active" : ""}>
           시가배당률
         </button>
       </div>
 
-      {/* 연도 버튼들 (시가총액 제외) */}
       {showYearButtons && (
-        <div style={{ display: "flex", gap: "5px", marginBottom: "20px" }}>
+        <div className="year-buttons">
           {["2021", "2022", "2023", "2024"].map((year) => (
-            <button
-              key={year}
-              onClick={() => handleYearButtonClick(year)}
-              style={{
-                backgroundColor: selectedYear === year ? "#007bff" : "#fff",
-                color: selectedYear === year ? "#fff" : "#000",
-                border: "1px solid #007bff",
-                borderRadius: "4px",
-                padding: "5px 10px",
-              }}
-            >
+            <button key={year}
+                    onClick={() => handleYearButtonClick(year)}
+                    className={selectedYear === year ? "active" : ""}>
               {year}
             </button>
           ))}
@@ -433,12 +304,8 @@ const FinancialStatementsPage = () => {
 
       {error && <p className="error-message">{error}</p>}
 
-      {/* 데이터 테이블 */}
       {stocks.length > 0 && (
-        <SimpleTable
-          stocks={stocks}
-          columnTitle={currentMetric}
-        />
+        <SimpleTable stocks={stocks} columnTitle={currentMetric} />
       )}
     </div>
   );
